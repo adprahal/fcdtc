@@ -6,8 +6,8 @@ import cv2
 
 def train_classifier(data_dir):
     path = [os.path.join(data_dir, f) for f in os.listdir(data_dir)]
-    faces=[]
-    ids=[]
+    faces = []
+    ids = []
 
     for image in path:
         img = Image.open(image).convert('L')
@@ -26,5 +26,6 @@ def train_classifier(data_dir):
     clf = cv2.face.LBPHFaceRecognizer_create()
     clf.train(faces, ids)
     clf.write("classifier.yml")
+
 
 train_classifier('data')

@@ -4,7 +4,7 @@ from subprocess import call
 
 
 def generate_dataset(img, id, img_id):
-    cv2.imwrite("data/user." + str(id) + "." + str(img_id) + ".jpg", img)
+    cv2.imwrite("data/user." + str(id) + "." + str(img_id) + ".png", img)
 
 
 def draw_boundary(img, classifier, scaleFactor, minNeighbors, color, text):
@@ -24,14 +24,9 @@ def detect(img, faceCascade, eyeCascade, noseCascade, img_id):  # , mouthCascade
 
     if len(coords) == 4:
         roi_img = img[coords[1]:coords[1] + coords[3], coords[0]:coords[0] + coords[2]]
-
-        user_id = 2
+        # path = [os.path.join(data_dir, f) for f in os.listdir(data_dir)]
+        user_id = 1
         generate_dataset(roi_img, user_id, img_id)
-
-        # coords = draw_boundary(roi_img, eyeCascade, 1.1, 14, color['red'], "Eyes")##
-        # # coords = draw_boundary(roi_img, mouthCascade, 1.1, 20, color['white'], "Mouth")
-        # coords = draw_boundary(roi_img, noseCascade, 1.1, 5, color['green'], "Nose")##
-
     return img
 
 
@@ -45,13 +40,13 @@ img_id = 0
 
 while True:
     _, img = video_capture.read()
+    # print(img)
     img = detect(img, faceCascade, eyeCascade, noseCascade, img_id)  # , mouthCascade ##
     cv2.imshow("Face Detection", img)
     img_id += 1
 
-    call(["python", "classifier.py"])
-    # exec('classifier.py')
-    if cv2.waitKey(1) & 0xFF == ord('q'):  # break loop with pressing q
+    # call(["python", "classifier.py"])
+    if cv2.waitKey(1) & 0xFF == ord('q'):  # break loop with pre    ssing q
         break
 
 video_capture.release()
